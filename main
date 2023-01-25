@@ -1,0 +1,668 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define ARR_LEN(_arr) (sizeof(_arr)/sizeof(_arr[0]))
+typedef struct
+{
+  int day;
+  int month;
+  int year;
+
+} Date;
+
+typedef struct _Client
+{
+  char firstName[15];
+  char lastName[15];
+  Date date;
+  int id;
+  int phone;
+  int dept;
+  struct _Client *next;
+
+} Client;
+
+void merge(Client** pHead, Client* head1, Client* head2 ){
+    
+    Client* tail = NULL;
+    Client* temp;
+    
+    *pHead = NULL;
+    while(head1 && head2){
+        if(head1->dept <= head2->dept){
+            temp = head1;
+            head1 = head1->next;
+        }
+        else{
+             temp = head2;
+            head2 = head2->next;
+        }
+        if(*pHead == NULL){
+            tail = temp;
+          *pHead =  tail;
+        }
+        else{
+            tail->next = temp;
+            tail = tail->next;
+        }
+    }
+    if(!head1){
+        tail->next = head2;
+        
+    }
+    else{
+        tail->next = head1;
+    }
+}
+void split(Client* pHead, Client** head1,  Client** head2){
+    Client* temp;
+    
+    int chek =1;
+    (*head1) = NULL;
+     (*head2) = NULL;
+     
+     while(pHead){
+         temp = pHead;
+         pHead = pHead->next;
+         
+         if(chek){
+             temp->next = *head1;
+             *head1 = temp;
+         }
+         else{
+              temp->next = *head2;
+             *head2 = temp;
+         }
+         if(chek)
+         chek = 0;
+         else
+         chek =1;
+         //chek = 0;
+     }
+}
+void ms(Client** pHead){
+    Client* head1 = NULL;
+    Client* head2= NULL;
+    
+    if((*pHead) == NULL|| (*pHead)->next == NULL)
+    return;
+    
+    split(*pHead, &head1, &head2);
+    ms(&head1);
+    ms(&head2);
+    merge(pHead, head1, head2);
+}
+
+
+
+void
+printList (Client * mylist)
+{
+  while (mylist)
+    {
+      //  puts(mylist->firstName);
+      //   puts(mylist->lastName);
+    //  printf ("%d \n", mylist->date.year);
+     printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+}
+
+
+
+void
+insertHead (Client ** pHead, Client * newClient)
+{
+
+
+  if (!newClient)
+    {
+      return;
+    }
+  if (*pHead)
+    {
+      //  printf("%d \n", (*pTail)->id);
+      (*pHead)->next = newClient;
+    }
+  *pHead = newClient;
+}
+
+void
+insertTail (Client ** pTail, Client * newClient)
+{
+
+
+  if (!newClient)
+    {
+      return;
+    }
+
+  if (*pTail)
+    {
+    
+      (*pTail)->next = newClient;
+    }
+  *pTail = newClient;
+
+}
+
+
+void
+help (const char *menu[], int len)
+{
+  printf ("Options: ");
+  for (int i = 0; i < len; i++)
+    {
+      printf ("%s ", menu[i]);
+    }
+  puts ("");
+}
+
+void
+celectId1 (Client * mylist, int id)
+{
+
+  while (mylist)
+    {
+      if (mylist->id == id)
+	printf (" %d %d %d %d %d %d \n", mylist->id, mylist->phone,
+		mylist->dept, mylist->date.day, mylist->date.month,
+		mylist->date.year);
+      mylist = mylist->next;
+    }
+
+}
+
+void
+celectId2 (Client * mylist, int id)
+{
+
+  while (mylist)
+    {
+      if (mylist->id != id)
+ printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+
+}
+
+void
+celectId3 (Client * mylist, int id)
+{
+
+  while (mylist)
+    {
+      if (mylist->id < id)
+printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+
+}
+
+void
+celectId4 (Client * mylist, int id)
+{
+
+  while (mylist)
+    {
+      if (mylist->id > id)
+printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+
+}
+
+void
+celectPhone1 (Client * mylist, int Phone)
+{
+
+  while (mylist)
+    {
+      if (mylist->phone == Phone)
+printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+
+}
+
+void
+celectPhone2 (Client * mylist, int Phone)
+{
+
+  while (mylist)
+    {
+      if (mylist->phone != Phone)
+printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+
+}
+
+void
+celectPhone3 (Client * mylist, int Phone)
+{
+
+  while (mylist)
+    {
+      if (mylist->phone < Phone)
+printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+
+}
+
+void
+celectPhone4 (Client * mylist, int Phone)
+{
+
+  while (mylist)
+    {
+      if (mylist->phone > Phone)
+printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+
+}
+
+void
+selectDate1 (Client * mylist, int day, int month, int year)
+{
+  while (mylist)
+    {
+      if (mylist->date.day == day && mylist->date.month == month
+	  && mylist->date.year == year)
+printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+}
+
+void
+selectDate2 (Client * mylist, int day, int month, int year)
+{
+  while (mylist)
+    {
+      if (mylist->date.day != day || mylist->date.month != month
+	  || mylist->date.year != year)
+printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+}
+
+void
+selectDate3 (Client * mylist, int day, int month, int year)
+{
+  while (mylist)
+    {
+      if (mylist->date.year < year
+	  || (mylist->date.year == year && mylist->date.month < month)
+	  || (mylist->date.year == year && mylist->date.month == month
+	      && mylist->date.day < day))
+printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+}
+
+void
+selectDate4 (Client * mylist, int day, int month, int year)
+{
+  while (mylist)
+     {
+      if (mylist->date.year > year
+	  || (mylist->date.year == year && mylist->date.month > month)
+	  || (mylist->date.year == year && mylist->date.month == month
+	      && mylist->date.day > day))
+printf ("first name: %s, last name: %s, id: %d, phone: 0%d, day: %d, month: %d year: %d dept: %d \n \n", mylist->firstName,
+				  mylist->lastName, mylist->id, mylist->phone, mylist->date.day, mylist->date.month, mylist->date.year, mylist->dept);
+      mylist = mylist->next;
+    }
+}
+
+void set(Client * mylist, char* firstName, char* lastName, int id, int phone, int day, int month, int year, int dept ){
+   
+         while(mylist){
+             if (strcasecmp(mylist->firstName, firstName)&&strcasecmp(mylist->lastName, lastName) && mylist->id == id && mylist->phone == phone
+             ){
+                  mylist->dept += dept;
+                  mylist->date.day = day;
+                   mylist->date.month = month;
+                    mylist->date.year = year;
+             }
+        mylist= mylist->next;
+    }
+    
+}
+int
+main ()
+{
+  const char *menu[] =
+    { "select id =", "select id != ", "select id < ", "select id > ",
+"select phone =", "select phone != ", "select phone < ", "select phone > ",
+"select date =",
+    "select date !=", "select date <", "select date >",
+    "set first name =", 
+  };
+  char input[100];
+  char *tmp;
+  int num;
+  int day, month, year;
+  char slesh;
+  char firstName[15];
+  char lastName[15];
+  int id, phone, dept;
+  int i;
+  char line[100];
+  Client *myClientsHead = NULL;
+  Client *myClientsTail = NULL;
+  FILE *file;
+  file = fopen ("clients.txt", "r");
+
+  if (!file)
+    {
+      puts ("ERROR");
+      return 0;
+    }
+  char *token;
+  const char s[2] = "/";
+  const char t[2] = "=";
+  const char u[2] = "<";
+  const char v[2] = ">";
+  const char w[2] = " ";
+  const char x[2] = ",";
+  while (1)
+    {
+
+      Client *myClient;
+      myClient = malloc (sizeof (Client));
+
+      if (!fgets (line, sizeof (line), file))
+	{
+
+	  break;
+	}
+
+ 
+      sscanf (line, "%s %s %d %d %d %d %d %d",
+          myClient->firstName, myClient->lastName,
+	      &myClient->id, &myClient->phone, &myClient->dept,
+	      &myClient->date.day, &myClient->date.month,
+	      &myClient->date.year);
+
+    
+
+      myClient->next = NULL;
+      if (!myClientsHead)
+	{
+	  insertHead (&myClientsHead, myClient);
+	  myClientsTail = myClient;
+	}
+      else
+	{
+
+	  insertTail (&myClientsTail, myClient);
+	}
+
+
+    }
+  fclose (file);
+ ms(&myClientsHead);
+  printList (myClientsHead);
+  while (1)
+    {
+
+      help (menu, ARR_LEN (menu));
+      fgets (input, sizeof (input), stdin);
+
+      for (i = 0; i < ARR_LEN (menu); i++)
+	{
+	  unsigned int len = strlen (menu[i]);
+	  if (!memcmp (input, menu[i], len))
+	    {
+	      switch (i)
+		{
+	
+		case 0:
+		 
+		case 1:
+		case 2:
+		case 3:
+
+		case 4:
+
+		case 5:
+		case 6:
+		case 7:
+
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+
+		  tmp = input + len;
+		
+		  while (sscanf (tmp, "%d", &num) > 0)	
+		    {	
+		      if (i == 0)
+			{
+			
+			  celectId1 (myClientsHead, num);
+
+			}
+		      if (i == 1)
+			{
+			
+			  celectId2 (myClientsHead, num);
+
+			}
+
+		      if (i == 2)
+			{
+			 
+			  celectId3 (myClientsHead, num);
+
+			}
+
+		      if (i == 3)
+			{
+			
+			  celectId4 (myClientsHead, num);
+
+			}
+		      if (i == 4)
+			{
+			 
+			  celectPhone1 (myClientsHead, num);
+
+			}
+		      if (i == 5)
+			{
+			
+			  celectPhone2 (myClientsHead, num);
+
+			}
+
+		      if (i == 6)
+			{
+
+			  celectPhone3 (myClientsHead, num);
+
+			}
+
+		      if (i == 7)
+			{
+
+			  celectPhone4 (myClientsHead, num);
+
+			}
+
+		      if (i == 8)
+			{
+			  token = strtok (input, t);
+		
+		
+			  token = strtok (NULL, s);
+			  sscanf (token, "%d", &day);
+			  token = strtok (NULL, s);
+
+			  sscanf (token, "%d", &month);
+			  token = strtok (NULL, s);
+
+			  sscanf (token, "%d", &year);
+			  token = strtok (NULL, s);
+
+			  printf ("day: %d, month: %d year: %d \n", day,
+				  month, year);
+			  selectDate1 (myClientsHead, day, month, year);
+			}
+
+		      if (i == 9)
+			{
+			  token = strtok (input, t);
+
+			  token = strtok (NULL, s);
+			  sscanf (token, "%d", &day);
+			  token = strtok (NULL, s);
+
+			  sscanf (token, "%d", &month);
+			  token = strtok (NULL, s);
+
+			  sscanf (token, "%d", &year);
+			  token = strtok (NULL, s);
+
+			  printf ("day: %d, month: %d year: %d \n", day,
+				  month, year);
+			  selectDate2 (myClientsHead, day, month, year);
+			}
+
+		      if (i == 10)
+			{
+			  token = strtok (input, u);
+		
+			  token = strtok (NULL, s);
+			  sscanf (token, "%d", &day);
+			  token = strtok (NULL, s);
+
+			  sscanf (token, "%d", &month);
+			  token = strtok (NULL, s);
+
+			  sscanf (token, "%d", &year);
+			  token = strtok (NULL, s);
+
+			  printf ("day: %d, month: %d year: %d \n", day,
+				  month, year);
+			  selectDate3 (myClientsHead, day, month, year);
+			}
+		      if (i == 11)
+			{
+			  token = strtok (input, v);
+		
+			  token = strtok (NULL, s);
+			  sscanf (token, "%d", &day);
+			  token = strtok (NULL, s);
+
+			  sscanf (token, "%d", &month);
+			  token = strtok (NULL, s);
+
+			  sscanf (token, "%d", &year);
+			  token = strtok (NULL, s);
+
+			  printf ("day: %d, month: %d year: %d \n", day,
+				  month, year);
+			  selectDate4 (myClientsHead, day, month, year);
+			}
+		
+		
+		
+		    
+		      // skip spaces before number
+		      while (*tmp == ' ' || *tmp == '-')
+			{
+			  tmp++;
+			}
+		      // skip the number untill next space or end of input
+		      while (*tmp != '\0' && *tmp != '\n' && *tmp != ' ')
+			{
+			  tmp++;
+			}
+			
+			case 12:
+			if(i == 12){
+			 tmp = input + len;
+			   token = strtok (input, t);
+			  //  token = strtok(NULL, s);
+			  puts (token);
+			  token = strtok (NULL, x);
+			  sscanf (token, "%s", firstName);
+			   puts (token);
+			  token = strtok (NULL, t);
+               puts (token);
+			//  sscanf (token, "%d", &month);
+			  token = strtok (NULL, x);
+                puts (token);
+			  sscanf (token, "%s", lastName);
+			  token = strtok (NULL, t);
+                 puts (token);
+                  token = strtok (NULL, x);
+                  sscanf (token, "%d", &id);
+                  
+                    token = strtok (NULL, t);
+                 puts (token);
+                  token = strtok (NULL, x);
+                  sscanf (token, "%d", &phone);
+                  
+                  
+                  	  token = strtok (NULL, t);
+			  //  token = strtok(NULL, s);
+			  puts (token);
+			  token = strtok (NULL, s);
+			  sscanf (token, "%d", &day);
+			  token = strtok (NULL, s);
+
+			  sscanf (token, "%d", &month);
+	
+              token = strtok (NULL, x);
+			  sscanf (token, "%d", &year);
+
+			  
+			  token = strtok (NULL, t);
+			  puts(token);
+			   token = strtok (NULL, x);
+               sscanf (token, "%d", &dept);   
+	
+			  printf ("first name: %s, last name: %s id: %d phone: %d day: %d, month: %d year: %d dept: %d \n \n", firstName,
+				  lastName, id, phone, day, month, year, dept);
+			  
+			   set(myClientsHead, firstName, lastName, id, phone, day, month, year, dept);
+			   ms(&myClientsHead);
+			}
+		  
+		    }
+		  break;
+		
+		}
+	      break;
+	    }
+	}
+
+      if (i == ARR_LEN (menu))
+	{
+	  printf ("No such option! ");
+	}
+    }
+
+exit:
+  
+  puts ("exit");
+
+}
